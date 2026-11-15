@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cynamonki - Nasze Experience</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-image: url("cover.avif");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* MENU BOCZNE */
+
+        .menu-kontener {
+            position: fixed;
+            left: -200px;
+            top: 0;
+            width: 245px;
+            height: 100vh;
+            z-index: 1000;
+            transition: left 0.4s ease;
+        }
+
+        .menu-kontener:hover {
+            left: 0;
+        }
+
+        .przycisk-menu {
+            position: absolute;
+            left: 200px;
+            top: 20px;
+            width: 45px;
+            height: 45px;
+            background-color: darkslategrey;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 27px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+        }
+
+        .menu {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 200px;
+            height: 100vh;
+            background-color: rgba(47, 79, 79, 0.95);
+            padding: 20px;
+        }
+
+        .menu h2 {
+            color: white;
+            text-align: center;
+        }
+
+        .menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
+        .menu a:hover {
+            background-color: #456565;
+        }
+
+        /* GŁÓWNA ZAWARTOŚĆ */
+
+        .zawartosc {
+            max-width: 850px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .karta {
+            background-color: rgba(255, 255, 255, 0.94);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            font-family: Georgia, serif;
+            font-size: 42px;
+            text-align: center;
+            color: darkslategrey;
+        }
+
+        .opis {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* DUŻE ZDJĘCIE */
+
+        .zdjecie {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        /* FORMULARZ */
+
+        .formularz {
+            margin-top: 30px;
+        }
+
+        .formularz h2 {
+            font-family: Georgia, serif;
+            color: darkslategrey;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+
+        .gwiazdki {
+            display: flex;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .gwiazdka {
+            font-size: 38px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .gwiazdka.aktywna {
+            color: #E5AA28;
+        }
+
+        .gwiazdka:hover {
+            transform: scale(1.15);
+        }
+
+        /* PRZYCISK */
+
+        .wyslij {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: darkslategrey;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .wyslij:hover {
+            background-color: #456565;
+        }
+
+        #informacja {
+            margin-top: 15px;
+            color: darkslategrey;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .karta {
+                padding: 18px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .zdjecie {
+                height: 260px;
+            }
+        }
+
+    </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <!-- MENU -->
+
+    <div class="menu-kontener">
+
+        <div class="przycisk-menu">☰</div>
+
+        <div class="menu">
+
+            <h2>NASZE EXPERIENCE</h2>
+
+            <a href="index.html">🏠 Strona główna</a>
+
+            <a href="ranking.html">🏆 Ranking</a>
+
+            <a href="wspomnienia.html"> Wspomnienia</a>
+
+        </div>
+
+    </div>
+
+
+    <!-- GŁÓWNA STRONA -->
+
+    <div class="zawartosc">
+
+        <div class="karta">
+
+            <h1>Cynamonki</h1>
+
+            <p class="opis">
+                14.11.2026
+            </p>
+
+            <!-- ZDJĘCIE -->
+
+            <img
+                src="cynamonki2.jpg"
+                alt="Nasze cynamonki"
+                class="zdjecie"
+            >
+
+
+            <!-- FORMULARZ OCENIANIA -->
+
+
+<div class="karta" id="loginPanel">
+    <h2>Dostęp do naszych wspomnień</h2>
+    <input type="password" id="loginPin" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="Wpisz 4-cyfrowy PIN" autocomplete="current-password">
+    <button class="wyslij" type="button" onclick="zaloguj()">Wejdź</button>
+    <p id="loginInfo" role="status"></p>
+</div>
+
+<div class="formularz" id="formularzOpinii" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <h2>Dodaj swoją opinię</h2>
+                    <button type="button" onclick="wyloguj()" style="padding:9px 13px; border:0; border-radius:8px; cursor:pointer;">Wyloguj</button>
+                </div>
+                <label for="autorOpinii">Kto wystawia opinię?</label>
+                <select id="autorOpinii">
+                    <option value="Gosia">Gosia</option>
+                    <option value="Kordian">Kordian</option>
+                </select>
+                <h2>Jak oceniasz to doświadczenie?</h2>
+
+                <p>Wybierz od 1 do 5 gwiazdek:</p>
+
+                <div class="gwiazdki">
+
+                    <span class="gwiazdka" data-ocena="1">★</span>
+                    <span class="gwiazdka" data-ocena="2">★</span>
+                    <span class="gwiazdka" data-ocena="3">★</span>
+                    <span class="gwiazdka" data-ocena="4">★</span>
+                    <span class="gwiazdka" data-ocena="5">★</span>
+
+                </div>
+
+
+                <h2>Twój komentarz</h2>
+
+                <textarea
+                    id="komentarz"
+                    placeholder="Napisz swój komentarz :>"
+                ></textarea>
+
+
+                <button class="wyslij" onclick="wyslijOcene()">
+                    Wyślij ocenę 
+                </button>
+
+                <p id="informacja" role="status"></p>
+                <hr style="margin:30px 0; border:0; border-top:1px solid #ddd;">
+                <h2>Nasze opinie</h2>
+                <div id="listaOpinii" aria-live="polite">Ładowanie opinii...</div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+const SUPABASE_URL = "https://rqhjzqdzivwdxlewknjv.supabase.co";
+const SUPABASE_KEY = "sb_publishable_RAAT83buOtWjT0roVNYpfw_9VgSIzza";
+const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/wspolny_pin`;
+const TOKEN_STORAGE_KEY = "nasze_experience_access_token";
+
+let wybranaOcena = 0;
+const gwiazdki = document.querySelectorAll(".gwiazdka");
+
+async function wywolajFunkcje(body) {
+    const response = await fetch(FUNCTION_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY
+        },
+        body: JSON.stringify(body)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || `Błąd serwera (${response.status})`);
+    return result;
+}
+
+async function zaloguj() {
+    const pinInput = document.getElementById("loginPin");
+    const info = document.getElementById("loginInfo");
+    const pin = pinInput.value.trim();
+    if (!/^\d{4}$/.test(pin)) {
+        info.textContent = "Wpisz dokładnie 4 cyfry.";
+        return;
+    }
+    info.textContent = "Sprawdzam PIN...";
+    try {
+        const result = await wywolajFunkcje({ action: "login", pin });
+        if (!result.success || !result.token) throw new Error("Nie otrzymano tokenu dostępu.");
+        localStorage.setItem(TOKEN_STORAGE_KEY, result.token);
+        pinInput.value = "";
+        pokazFormularz();
+        await pobierzOpinie();
+    } catch (error) {
+        info.textContent = error.message;
+    }
+}
+
+function pokazFormularz() {
+    document.getElementById("loginPanel").style.display = "none";
+    document.getElementById("formularzOpinii").style.display = "block";
+}
+
+function pokazLogowanie() {
+    document.getElementById("loginPanel").style.display = "block";
+    document.getElementById("formularzOpinii").style.display = "none";
+}
+
+function wyloguj() {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    pokazLogowanie();
+    document.getElementById("loginInfo").textContent = "Wylogowano.";
+}
+
+async function sprawdzDostep() {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (!token) return;
+    try {
+        pokazFormularz();
+        await pobierzOpinie();
+    } catch (error) {
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
+        pokazLogowanie();
+        document.getElementById("loginInfo").textContent = "Sesja wygasła lub dostęp jest nieprawidłowy. Wpisz PIN ponownie.";
+    }
+}
+
+gwiazdki.forEach((gwiazdka) => {
+    gwiazdka.addEventListener("click", () => {
+        wybranaOcena = Number(gwiazdka.dataset.ocena);
+        gwiazdki.forEach((element) => {
+            element.classList.toggle("aktywna", Number(element.dataset.ocena) <= wybranaOcena);
+        });
+    });
+});
+
+async function wyslijOcene() {
+    const informacja = document.getElementById("informacja");
+    const komentarz = document.getElementById("komentarz").value.trim();
+    const autor = document.getElementById("autorOpinii").value;
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+
+    if (!token) {
+        wyloguj();
+        return;
+    }
+    if (wybranaOcena === 0) {
+        informacja.textContent = "Wybierz gwiazdki!";
+        return;
+    }
+    if (!komentarz) {
+        informacja.textContent = "Napisz komentarz!";
+        return;
+    }
+
+    informacja.textContent = "Zapisywanie opinii...";
+    try {
+        await wywolajFunkcje({
+            action: "save",
+token,
+doswiadczenie: "cynamonki",
+autor: autor,
+gwiazdki: Number(wybranaOcena),
+komentarz: komentarz.trim()
+        });
+        informacja.textContent = "Twoja opinia została zapisana!";
+        document.getElementById("komentarz").value = "";
+        wybranaOcena = 0;
+        gwiazdki.forEach((element) => element.classList.remove("aktywna"));
+        await pobierzOpinie();
+    } catch (error) {
+        informacja.textContent = error.message;
+        if (error.message.includes("sesja") || error.message.includes("dostęp")) wyloguj();
+    }
+}
+
+async function pobierzOpinie() {
+    const lista = document.getElementById("listaOpinii");
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (!token) return;
+    lista.textContent = "Pobieranie opinii...";
+    const result = await wywolajFunkcje({
+        action: "list", token, doswiadczenie: "cynamonki"
+    });
+    lista.replaceChildren();
+    if (!result.opinie || result.opinie.length === 0) {
+        lista.textContent = "Nie ma jeszcze żadnych opinii. Dodaj pierwszą!";
+        return;
+    }
+    result.opinie.forEach((opinia) => {
+        const karta = document.createElement("div");
+        karta.style.cssText = "background:#f5f5f5; padding:16px; border-radius:12px; margin:12px 0;";
+        const naglowek = document.createElement("strong");
+        naglowek.textContent = `${opinia.autor} • ${"★".repeat(opinia.gwiazdki)}${"☆".repeat(5 - opinia.gwiazdki)}`;
+        const tresc = document.createElement("p");
+        tresc.textContent = opinia.komentarz;
+        const data = document.createElement("small");
+        data.textContent = new Date(opinia.data_dodania).toLocaleString("pl-PL");
+        karta.append(naglowek, tresc, data);
+        lista.appendChild(karta);
+    });
+}
+
+sprawdzDostep();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking naszych wspólnych experience</title>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    body {
+        background-image: url(cover.avif);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        font-family: Georgia, serif;
+        font-size: 36px;
+        text-align: center;
+        color: darkslategrey;
+    }
+
+
+
+    .menu h2 {
+        color: white;
+        font-size: 20px;
+        text-align: center;
+    }
+
+.menu a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 15px 10px;
+        margin-top: 10px;
+        border-radius: 8px;
+    }
+
+
+.menu-kontener {
+    position: fixed;
+    left: -200px;
+    top: 0;
+    width: 245px;
+    height: 100vh;
+    z-index: 1000;
+
+    transition: left 0.4s ease;
+}
+
+
+.menu-kontener:hover {
+    left: 0;
+}
+
+
+.przycisk-menu {
+    position: absolute;
+    left: 200px;
+    top: 20px;
+
+    width: 45px;
+    height: 45px;
+
+    background-color: darkslategrey;
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 27px;
+    cursor: pointer;
+
+    border-radius: 0 8px 8px 0;
+}
+
+.menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 200px;
+    height: 100vh;
+
+    background-color: rgba(47, 79, 79, 0.9);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+.menu h2 {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+
+.menu a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 15px 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.menu a:hover {
+    background-color: #456565;
+}
+
+
+    .menu a:hover {
+        background-color: darkslategrey;
+    }
+
+    .zawartosc {
+        margin-left: 0px;
+        padding: 20px;
+    }
+    .kontener-kafelkow {
+      display: flex;
+      justify-content: center;
+      gap: 20px; 
+      flex-wrap: wrap; 
+      margin-top: 30px;
+    }
+    
+
+.kontener-kafelkow {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+
+.kafelek {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+
+    width: 280px;
+    height: 350px;
+
+    border-radius: 15px;
+    overflow: hidden;
+
+    text-decoration: none;
+    color: white;
+
+    background-size: cover;
+    background-position: center;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+
+.kafelek::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.8),
+        transparent 65%
+    );
+}
+
+.kafelek h2 {
+    position: relative;
+    z-index: 1;
+
+    color: white;
+    font-family: Georgia, serif;
+    font-size: 25px;
+    font-weight: bold;
+
+    margin: 20px;
+}
+
+
+.kafelek:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+
+    .kafelek h2 {
+      color: #cccccc;
+      margin-top: 0;
+    }
+
+</style>
+</head>
+
+<body>
+
+     
+<div class="menu-kontener">
+
+    <div class="przycisk-menu">
+        ☰
+    </div>
+
+    <div class="menu">
+
+        <h2>NASZE EXPERIENCE</h2>
+
+        <a href="index.html">🏠 Strona główna</a>
+
+        <a href="ranking.html">🏆 Ranking</a>
+
+        <a href="wspomnienia.html"> Wspomnienia</a>
+
+    </div>
+
+</div>
+
+
+    
+    <div class="zawartosc">
+
+        <section id="glowna">
+
+            <h1>Spis naszych rzeczy</h1>
+
+        </section>
+
+        <section id="ranking">
+
+            <h1></h1>
+
+        </section>
+
+        <section id="wspomnienia">
+
+            <h1></h1>
+
+        </section>
+
+    </div>
+
+    <div class="kontener-kafelkow">
+    
+    
+<a href="cynamonki.html"
+   class="kafelek"
+   style="background-image: url(cynamonki2.jpg);">
+
+    <h2>Cynamonki</h2>
+
+</a>
+<a href="lyzwy.html"
+   class="kafelek"
+   style="background-image: url(łyżwy.jpg);">
+
+    <h2>Łyżwy</h2>
+
+</a>
+
+  </div>
+
+</body>
+</html>
