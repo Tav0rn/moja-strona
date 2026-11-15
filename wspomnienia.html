@@ -1,14 +1,414 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moja strona HTML</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nasze wspomnienia ❤️</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  color: #332c35;
+  background: #fff8fb;
+}
+main { max-width: 950px; margin: auto; }
+h1 { text-align: center; color: #a34d7b; }
+.subtitle { text-align: center; color: #806b78; }
+button, .upload-label {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  background: #b85d8d;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+button:hover, .upload-label:hover { background: #98456f; }
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0 14px;
+  border: 1px solid #e5cbd9;
+  border-radius: 10px;
+  font-size: 16px;
+}
+.panel {
+  background: white;
+  padding: 22px;
+  margin: 20px 0;
+  border-radius: 18px;
+  box-shadow: 0 3px 15px #0000000c;
+}
+.hidden { display: none !important; }
+.events, .gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+}
+.event {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 3px 15px #0000000c;
+}
+.event img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+.event h3 { padding: 0 15px; }
+.event p { padding: 0 15px 12px; color: #806b78; }
+.photo {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 3px 15px #0000000c;
+}
+.photo img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  cursor: pointer;
+}
+.photo-info { padding: 12px; overflow-wrap: anywhere; }
+.photo-info button { margin-top: 8px; background: #8e526c; }
+.back { background: #806b78; margin-bottom: 15px; }
+.status { margin: 12px 0; color: #80516b; white-space: pre-wrap; }
+.upload-label { display: inline-block; margin: 5px 0 12px; }
+#fileInput { display: none; }
+small { color: #806b78; }
+@media(max-width: 500px) {
+  body { padding: 14px; }
+  .panel { padding: 16px; }
+}
+</style>
 </head>
 <body>
+<main>
+  <h1>Nasze wspomnienia ❤️</h1>
+  <p class="subtitle">Małe chwile, do których chcemy wracać</p>
 
-  <h1>Test</h1>
-  <p></p>
-    <a href="index.html" class="przycisk-powrot">← Wróć do strony głównej</a>
+  <section id="loginPanel" class="panel">
+    <h2>Nasze prywatne miejsce</h2>
+    <label for="pin">Wpisz wspólny PIN</label>
+    <input id="pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+    <button id="loginButton" onclick="zaloguj()">Zaloguj się</button>
+    <p id="loginStatus" class="status"></p>
+  </section>
+
+  <section id="eventsPanel" class="hidden">
+    <div class="panel">
+      <h2>Nasze wydarzenia</h2>
+      <p>Wybierz wspomnienie, do którego chcesz dodać zdjęcia.</p>
+      <div class="events">
+        <article class="event" onclick="otworzWydarzenie('lyzwy','Łyżwy')">
+          <img src="łyżwy.jpg" alt="Łyżwy"
+               onerror="this.style.display='none'">
+          <h3>⛸️ Łyżwy</h3>
+          <p>Nasze chwile na lodzie</p>
+        </article>
+        <article class="event" onclick="otworzWydarzenie('cynamonki','Cynamonki')">
+          <img src="cynamonki2.jpg" alt="Cynamonki"
+               onerror="this.style.display='none'">
+          <h3>🥐 Cynamonki</h3>
+          <p>Wspólne pieczenie</p>
+        </article>
+      </div>
+    </div>
+    <button onclick="wyloguj()">Wyloguj</button>
+  </section>
+
+  <section id="galleryPanel" class="hidden">
+    <button class="back" onclick="pokazWydarzenia()">← Wróć do wydarzeń</button>
+    <div class="panel">
+      <h2 id="eventTitle">Wspomnienie</h2>
+
+      <label for="autor">Kto dodaje zdjęcia?</label>
+      <select id="autor">
+        <option value="Gosia">Gosia</option>
+        <option value="Kordian">Kordian</option>
+      </select>
+
+      <label for="opis">Opis zdjęć (opcjonalnie)</label>
+      <textarea id="opis" rows="2" maxlength="500"
+        placeholder="Np. Nasz pierwszy wspólny wyjazd ❤️"></textarea>
+
+      <label class="upload-label" for="fileInput">
+        📷 Wybierz zdjęcia z telefonu
+      </label>
+      <input id="fileInput" type="file"
+        accept="image/jpeg,image/png,image/webp,image/heic" multiple>
+
+      <small>Możesz wybrać kilka zdjęć naraz. Maksymalnie 50 MB na jedno zdjęcie.</small>
+      <p id="uploadStatus" class="status"></p>
+      <button id="uploadButton" onclick="dodajZdjecia()">Dodaj zdjęcia</button>
+    </div>
+
+    <div class="panel">
+      <h2>Galeria 📸</h2>
+      <p id="galleryStatus" class="status">Ładowanie zdjęć...</p>
+      <div id="gallery" class="gallery"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const SUPABASE_URL = "https://rqhjzqdzivwdxlewknjv.supabase.co";
+const SUPABASE_KEY = "sb_publishable_RAAT83buOtWjT0roVNYpfw_9VgSIzza";
+const FUNCTION_URL = SUPABASE_URL + "/functions/v1/wspolny_pin";
+const TOKEN_KEY = "nasze_experience_access_token";
+
+const client = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let token = localStorage.getItem(TOKEN_KEY);
+let aktualneWydarzenie = "";
+let aktualnaNazwa = "";
+
+async function wywolajFunkcje(body) {
+  const response = await fetch(FUNCTION_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_KEY
+    },
+    body: JSON.stringify(body)
+  });
+
+  const result = await response.json();
+
+  if (!response.ok || result.success === false) {
+    throw new Error(result.error || "Wystąpił błąd.");
+  }
+
+  return result;
+}
+
+function pokaz(id) {
+  ["loginPanel", "eventsPanel", "galleryPanel"].forEach(element => {
+    document.getElementById(element).classList.add("hidden");
+  });
+  document.getElementById(id).classList.remove("hidden");
+}
+
+async function zaloguj() {
+  const pin = document.getElementById("pin").value;
+  const status = document.getElementById("loginStatus");
+  const button = document.getElementById("loginButton");
+
+  if (!/^\d{4}$/.test(pin)) {
+    status.textContent = "Wpisz czterocyfrowy PIN.";
+    return;
+  }
+
+  button.disabled = true;
+  status.textContent = "Logowanie...";
+
+  try {
+    const result = await wywolajFunkcje({
+      action: "login",
+      pin
+    });
+
+    token = result.token;
+    localStorage.setItem(TOKEN_KEY, token);
+    document.getElementById("pin").value = "";
+    pokaz("eventsPanel");
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function wyloguj() {
+  token = null;
+  localStorage.removeItem(TOKEN_KEY);
+  pokaz("loginPanel");
+}
+
+function pokazWydarzenia() {
+  pokaz("eventsPanel");
+}
+
+async function otworzWydarzenie(id, nazwa) {
+  aktualneWydarzenie = id;
+  aktualnaNazwa = nazwa;
+  document.getElementById("eventTitle").textContent = nazwa;
+  document.getElementById("opis").value = "";
+  document.getElementById("fileInput").value = "";
+  document.getElementById("uploadStatus").textContent = "";
+  pokaz("galleryPanel");
+  await pobierzZdjecia();
+}
+
+async function pobierzZdjecia() {
+  const gallery = document.getElementById("gallery");
+  const status = document.getElementById("galleryStatus");
+  gallery.innerHTML = "";
+  status.textContent = "Ładowanie zdjęć...";
+
+  try {
+    const result = await wywolajFunkcje({
+      action: "list_photos",
+      token,
+      wydarzenie: aktualneWydarzenie
+    });
+
+    if (!result.zdjecia || result.zdjecia.length === 0) {
+      status.textContent = "Nie ma jeszcze zdjęć. Dodajcie pierwsze! ❤️";
+      return;
+    }
+
+    status.textContent = "";
+
+    result.zdjecia.forEach(zdjecie => {
+      if (!zdjecie.url) return;
+
+      const card = document.createElement("article");
+      card.className = "photo";
+
+      const img = document.createElement("img");
+      img.src = zdjecie.url;
+      img.alt = "Wspomnienie";
+      img.loading = "lazy";
+      img.onclick = () => window.open(zdjecie.url, "_blank");
+
+      const info = document.createElement("div");
+      info.className = "photo-info";
+
+      const author = document.createElement("strong");
+      author.textContent = zdjecie.autor;
+
+      const description = document.createElement("p");
+      description.textContent = zdjecie.opis || "";
+
+      const date = document.createElement("small");
+      date.textContent = new Date(zdjecie.data_dodania)
+        .toLocaleDateString("pl-PL");
+
+      const remove = document.createElement("button");
+      remove.textContent = "Usuń zdjęcie";
+      remove.onclick = () => usunZdjecie(zdjecie.id);
+
+      info.append(author, description, date, document.createElement("br"), remove);
+      card.append(img, info);
+      gallery.append(card);
+    });
+
+  } catch (error) {
+    status.textContent = error.message;
+  }
+}
+
+async function dodajZdjecia() {
+  const files = Array.from(document.getElementById("fileInput").files);
+  const status = document.getElementById("uploadStatus");
+  const button = document.getElementById("uploadButton");
+
+  if (files.length === 0) {
+    status.textContent = "Najpierw wybierz zdjęcia.";
+    return;
+  }
+
+  if (files.some(file => file.size > 50 * 1024 * 1024)) {
+    status.textContent = "Jedno ze zdjęć przekracza limit 50 MB.";
+    return;
+  }
+
+  button.disabled = true;
+
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      if (!["image/jpeg", "image/png", "image/webp", "image/heic"].includes(file.type)) {
+        throw new Error("Nieobsługiwany format pliku: " + file.name);
+      }
+
+      status.textContent = `Wysyłanie zdjęcia ${i + 1} z ${files.length}...`;
+
+      const przygotowanie = await wywolajFunkcje({
+        action: "create_photo_upload",
+        token,
+        wydarzenie: aktualneWydarzenie,
+        autor: document.getElementById("autor").value,
+        nazwa_pliku: file.name,
+        typ_pliku: file.type
+      });
+
+      const { error: uploadError } = await client.storage
+        .from("wspomnienia")
+        .uploadToSignedUrl(
+          przygotowanie.storage_path,
+          przygotowanie.upload_token,
+          file,
+          { contentType: file.type }
+        );
+
+      if (uploadError) {
+        throw new Error("Nie udało się wysłać zdjęcia: " + uploadError.message);
+      }
+
+      try {
+        await wywolajFunkcje({
+          action: "save_photo",
+          token,
+          wydarzenie: aktualneWydarzenie,
+          autor: document.getElementById("autor").value,
+          storage_path: przygotowanie.storage_path,
+          opis: document.getElementById("opis").value
+        });
+      } catch (error) {
+        status.textContent =
+          "Plik został wysłany, ale nie udało się zapisać jego opisu w bazie. " +
+          "Zachowaj tę informację i zgłoś mi błąd: " + error.message;
+        throw error;
+      }
+    }
+
+    status.textContent = "Wszystkie zdjęcia zostały dodane! ❤️";
+    document.getElementById("fileInput").value = "";
+    await pobierzZdjecia();
+
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+}
+
+async function usunZdjecie(id) {
+  if (!confirm("Czy na pewno chcesz usunąć to zdjęcie?")) return;
+
+  const status = document.getElementById("galleryStatus");
+  status.textContent = "Usuwanie zdjęcia...";
+
+  try {
+    await wywolajFunkcje({
+      action: "delete_photo",
+      token,
+      id
+    });
+
+    await pobierzZdjecia();
+  } catch (error) {
+    status.textContent = error.message;
+  }
+}
+
+if (token) {
+  pokaz("eventsPanel");
+} else {
+  pokaz("loginPanel");
+}
+</script>
 </body>
 </html>
