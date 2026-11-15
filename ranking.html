@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -270,7 +269,7 @@ const FUNCTION_URL =
 const TOKEN_STORAGE_KEY =
 "nasze_experience_access_token";
 
-// Do listy będziemy dopisywać kolejne doświadczenia.
+
 const doswiadczenia = [
     {
         id: "cynamonki",
@@ -425,7 +424,7 @@ async function pobierzRanking() {
             link.href = item.link;
 
             const nazwa = document.createElement("h2");
-            nazwa.textContent = `${item.emoji} ${item.nazwa}`;
+            nazwa.textContent = `${item.nazwa}`;
             link.appendChild(nazwa);
 
             const liczba = document.createElement("div");
