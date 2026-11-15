@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nasze wspomnienia ❤️</title>
+<title>Nasze wspomnienia </title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { box-sizing: border-box; }
@@ -86,11 +86,28 @@ small { color: #806b78; }
   body { padding: 14px; }
   .panel { padding: 16px; }
 }
+  .home-button {
+  display: inline-block;
+  text-decoration: none;
+  background: #806b78;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
+
+.home-button:hover {
+  background: #624b59;
+}
 </style>
 </head>
 <body>
 <main>
-  <h1>Nasze wspomnienia ❤️</h1>
+  <a href="index.html" class="home-button">
+  ← Powrót do strony głównej
+</a>
+  <h1>Nasze wspomnienia </h1>
   <p class="subtitle">Małe chwile, do których chcemy wracać</p>
 
   <section id="loginPanel" class="panel">
@@ -136,7 +153,7 @@ small { color: #806b78; }
 
       <label for="opis">Opis zdjęć (opcjonalnie)</label>
       <textarea id="opis" rows="2" maxlength="500"
-        placeholder="Np. Nasz pierwszy wspólny wyjazd ❤️"></textarea>
+        placeholder=""></textarea>
 
       <label class="upload-label" for="fileInput">
         📷 Wybierz zdjęcia z telefonu
@@ -263,7 +280,7 @@ async function pobierzZdjecia() {
     });
 
     if (!result.zdjecia || result.zdjecia.length === 0) {
-      status.textContent = "Nie ma jeszcze zdjęć. Dodajcie pierwsze! ❤️";
+      status.textContent = "Nie ma jeszcze zdjęć.";
       return;
     }
 
@@ -374,7 +391,7 @@ async function dodajZdjecia() {
       }
     }
 
-    status.textContent = "Wszystkie zdjęcia zostały dodane! ❤️";
+    status.textContent = "Wszystkie zdjęcia zostały dodane!";
     document.getElementById("fileInput").value = "";
     await pobierzZdjecia();
 
