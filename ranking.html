@@ -1,14 +1,489 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moja strona HTML</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranking - Nasze Experience</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: url("cover.avif") center/cover fixed;
+    color: darkslategrey;
+}
+
+.menu-kontener {
+    position: fixed;
+    left: -200px;
+    top: 0;
+    width: 245px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left .4s ease;
+}
+
+.menu-kontener:hover { left: 0; }
+
+.przycisk-menu {
+    position: absolute;
+    left: 200px;
+    top: 20px;
+    width: 45px;
+    height: 45px;
+    background: darkslategrey;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 27px;
+    cursor: pointer;
+    border-radius: 0 8px 8px 0;
+}
+
+.menu {
+    width: 200px;
+    height: 100vh;
+    background: rgba(47,79,79,.95);
+    padding: 20px;
+}
+
+.menu h2 {
+    color: white;
+    text-align: center;
+}
+
+.menu a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 15px 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.menu a:hover { background: #456565; }
+
+.zawartosc {
+    max-width: 950px;
+    margin: auto;
+    padding: 35px 20px;
+}
+
+.karta {
+    background: rgba(255,255,255,.95);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.15);
+    margin-bottom: 22px;
+}
+
+h1 {
+    font-family: Georgia, serif;
+    font-size: 38px;
+    text-align: center;
+}
+
+.podtytul {
+    text-align: center;
+    color: #777;
+}
+
+.sortowanie {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+button {
+    padding: 12px 17px;
+    border: none;
+    border-radius: 9px;
+    background: #e8eeee;
+    color: darkslategrey;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button.aktywny,
+button:hover {
+    background: darkslategrey;
+    color: white;
+}
+
+.pozycja {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px;
+    background: #f4f6f5;
+    border-radius: 14px;
+    margin: 14px 0;
+}
+
+.miejsce {
+    font-size: 27px;
+    font-weight: bold;
+    min-width: 42px;
+}
+
+.pozycja-info { flex: 1; }
+
+.pozycja-info h2 {
+    margin: 0 0 7px;
+    font-family: Georgia, serif;
+}
+
+.srednia {
+    font-size: 22px;
+    font-weight: bold;
+    color: #b88720;
+    white-space: nowrap;
+}
+
+.gwiazdki {
+    color: #e5aa28;
+    letter-spacing: 2px;
+}
+
+.liczba {
+    color: #777;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.pozycja a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.pozycja a:hover h2 {
+    text-decoration: underline;
+}
+
+#status, #loginInfo {
+    text-align: center;
+    margin: 15px 0;
+}
+
+#loginPanel {
+    max-width: 450px;
+    margin: 25px auto;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.wyslij {
+    width: 100%;
+    margin-top: 12px;
+    background: darkslategrey;
+    color: white;
+}
+
+@media(max-width:600px) {
+    h1 { font-size: 30px; }
+    .karta { padding: 17px; }
+    .pozycja { gap: 10px; padding: 12px; }
+    .miejsce { min-width: 30px; font-size: 22px; }
+    .srednia { font-size: 18px; }
+}
+</style>
 </head>
+
 <body>
 
-  <h1>Test</h1>
-  <p></p>
-    <a href="index.html" class="przycisk-powrot">← Wróć do strony głównej</a>
+<div class="menu-kontener">
+    <div class="przycisk-menu">☰</div>
+    <div class="menu">
+        <h2>NASZE EXPERIENCE</h2>
+        <a href="index.html">🏠 Strona główna</a>
+        <a href="ranking.html">🏆 Ranking</a>
+        <a href="wspomnienia.html">📷 Wspomnienia</a>
+    </div>
+</div>
+
+<div class="zawartosc">
+
+    <div class="karta">
+        <h1>🏆 Nasz ranking</h1>
+        <p class="podtytul">
+            Które doświadczenia były najlepsze?
+        </p>
+
+        <div class="sortowanie">
+            <button id="malejaco" class="aktywny"
+                onclick="zmienSortowanie('malejaco')">
+                ⭐ Najwyżej oceniane
+            </button>
+
+            <button id="rosnaco"
+                onclick="zmienSortowanie('rosnaco')">
+                Najniżej oceniane
+            </button>
+        </div>
+
+        <div id="status">Ładowanie rankingu...</div>
+        <div id="ranking"></div>
+
+        <button class="wyslij" onclick="pobierzRanking()">
+            🔄 Odśwież ranking
+        </button>
+    </div>
+
+    <div class="karta" id="loginPanel">
+        <h2>Dostęp do rankingu</h2>
+        <p>Wpisz swój 4-cyfrowy PIN.</p>
+        <input type="password" id="loginPin"
+            inputmode="numeric" maxlength="4"
+            placeholder="Wpisz PIN">
+        <button class="wyslij" onclick="zaloguj()">
+            Wejdź
+        </button>
+        <p id="loginInfo"></p>
+    </div>
+
+</div>
+
+<script>
+const SUPABASE_URL =
+"https://rqhjzqdzivwdxlewknjv.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_RAAT83buOtWjT0roVNYpfw_9VgSIzza";
+
+const FUNCTION_URL =
+`${SUPABASE_URL}/functions/v1/wspolny_pin`;
+
+const TOKEN_STORAGE_KEY =
+"nasze_experience_access_token";
+
+// Do listy będziemy dopisywać kolejne doświadczenia.
+const doswiadczenia = [
+    {
+        id: "cynamonki",
+        nazwa: "Cynamonki",
+        link: "cynamonki.html",
+        emoji: "🥐"
+    },
+    {
+        id: "lyzwy",
+        nazwa: "Łyżwy",
+        link: "lyzwy.html",
+        emoji: "⛸️"
+    }
+];
+
+let kolejnosc = "malejaco";
+
+async function wywolajFunkcje(body) {
+    const response = await fetch(FUNCTION_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY
+        },
+        body: JSON.stringify(body)
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(
+            result.error || `Błąd serwera (${response.status})`
+        );
+    }
+
+    return result;
+}
+
+async function zaloguj() {
+    const pin = document.getElementById("loginPin").value.trim();
+    const info = document.getElementById("loginInfo");
+
+    if (!/^\d{4}$/.test(pin)) {
+        info.textContent = "Wpisz dokładnie 4 cyfry.";
+        return;
+    }
+
+    info.textContent = "Sprawdzam PIN...";
+
+    try {
+        const result = await wywolajFunkcje({
+            action: "login",
+            pin
+        });
+
+        if (!result.success || !result.token) {
+            throw new Error("Nie otrzymano tokenu dostępu.");
+        }
+
+        localStorage.setItem(TOKEN_STORAGE_KEY, result.token);
+        document.getElementById("loginPin").value = "";
+
+        pokazRanking();
+        await pobierzRanking();
+
+    } catch (error) {
+        info.textContent = error.message;
+    }
+}
+
+function pokazRanking() {
+    document.getElementById("loginPanel").style.display = "none";
+}
+
+function pokazLogowanie() {
+    document.getElementById("loginPanel").style.display = "block";
+}
+
+function zmienSortowanie(tryb) {
+    kolejnosc = tryb;
+
+    document.getElementById("malejaco")
+        .classList.toggle("aktywny", tryb === "malejaco");
+
+    document.getElementById("rosnaco")
+        .classList.toggle("aktywny", tryb === "rosnaco");
+
+    pobierzRanking();
+}
+
+async function pobierzRanking() {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    const status = document.getElementById("status");
+    const ranking = document.getElementById("ranking");
+
+    if (!token) {
+        pokazLogowanie();
+        return;
+    }
+
+    status.textContent = "Pobieranie ocen z Supabase...";
+    ranking.replaceChildren();
+
+    try {
+        const wyniki = await Promise.all(
+            doswiadczenia.map(async (doswiadczenie) => {
+                const result = await wywolajFunkcje({
+                    action: "list",
+                    token,
+                    doswiadczenie: doswiadczenie.id
+                });
+
+                const opinie = result.opinie || [];
+
+                const suma = opinie.reduce(
+                    (acc, opinia) => acc + Number(opinia.gwiazdki),
+                    0
+                );
+
+                const srednia = opinie.length
+                    ? suma / opinie.length
+                    : 0;
+
+                return {
+                    ...doswiadczenie,
+                    liczba: opinie.length,
+                    srednia
+                };
+            })
+        );
+
+        wyniki.sort((a, b) => {
+            if (kolejnosc === "malejaco") {
+                return b.srednia - a.srednia;
+            }
+            return a.srednia - b.srednia;
+        });
+
+        status.textContent = "";
+
+        wyniki.forEach((item, index) => {
+            const pozycja = document.createElement("div");
+            pozycja.className = "pozycja";
+
+            const miejsce = document.createElement("div");
+            miejsce.className = "miejsce";
+            miejsce.textContent =
+                ["🥇", "🥈", "🥉"][index] || `${index + 1}.`;
+
+            const info = document.createElement("div");
+            info.className = "pozycja-info";
+
+            const link = document.createElement("a");
+            link.href = item.link;
+
+            const nazwa = document.createElement("h2");
+            nazwa.textContent = `${item.emoji} ${item.nazwa}`;
+            link.appendChild(nazwa);
+
+            const liczba = document.createElement("div");
+            liczba.className = "liczba";
+            liczba.textContent = item.liczba
+                ? `${item.liczba} ${item.liczba === 1 ? "opinia" : item.liczba < 5 ? "opinie" : "opinii"}`
+                : "Brak ocen";
+
+            info.append(link, liczba);
+
+            const wynik = document.createElement("div");
+            wynik.className = "srednia";
+
+            if (item.liczba) {
+                wynik.textContent = `${item.srednia.toFixed(2)} ⭐`;
+            } else {
+                wynik.textContent = "—";
+            }
+
+            pozycja.append(miejsce, info, wynik);
+            ranking.appendChild(pozycja);
+        });
+
+        if (wyniki.every(item => item.liczba === 0)) {
+            status.textContent = "Nie ma jeszcze żadnych ocen.";
+        }
+
+    } catch (error) {
+        status.textContent = "Nie udało się pobrać rankingu: " + error.message;
+
+        if (
+            error.message.toLowerCase().includes("sesja") ||
+            error.message.toLowerCase().includes("dostęp")
+        ) {
+            localStorage.removeItem(TOKEN_STORAGE_KEY);
+            pokazLogowanie();
+        }
+    }
+}
+
+async function sprawdzSesje() {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+
+    if (!token) {
+        pokazLogowanie();
+        document.getElementById("status").textContent =
+            "Zaloguj się, aby zobaczyć ranking.";
+        return;
+    }
+
+    pokazRanking();
+    await pobierzRanking();
+}
+
+sprawdzSesje();
+</script>
+
 </body>
 </html>
